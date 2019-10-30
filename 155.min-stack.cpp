@@ -55,46 +55,80 @@
 // 	vector<int> s;
 // };
 
+// 一种思路吧，本质时数据栈和辅助栈同步
+// class MinStack {
+// public:
+// 	/** initialize your data structure here. */
+// 	MinStack() : s() { }
+
+// 	void push(int x) {
+// 		int min = INT_MAX;
+// 		if (!s.empty()) {
+// 			min = s.back();
+// 		}
+// 		if (x < min) {
+// 			min = x;
+// 		}
+// 		s.push_back(x);
+// 		s.push_back(min);
+// 	}
+
+// 	void pop() {
+// 		if (s.empty()) {
+// 			return;
+// 		}
+// 		s.erase(s.end() - 1);
+// 		s.erase(s.end() - 1);
+// 	}
+
+// 	int top() {
+// 		if (s.empty()) {
+// 			return INT_MAX;
+// 		}
+// 		return *(s.end() - 2);
+// 	}
+
+// 	int getMin() {
+// 		if (s.empty()) {
+// 			return INT_MAX;
+// 		}
+// 		return s.back();
+// 	}
+// private:
+// 	vector<int> s;
+// };
+
+// 数据栈和辅助栈不同步
 class MinStack {
-public:
-	/** initialize your data structure here. */
-	MinStack() : min(INT_MAX), s() {
-	}
+ public:
+ 	/** initialize your data structure here. */
+ 	MinStack() { }
 
-	void push(int x) {
-		if (x < min) {
-			min = x;
+ 	void push(int x) {
+		if (aux.empty() || aux.top() >= x) {
+			aux.push(x);
 		}
-		s.push_back(x);
-		s.push_back(min);
-	}
+		data.push(x);
+ 	}
 
-	void pop() {
-		if (s.empty()) {
-			return;
+ 	void pop() {
+		if (data.top() == aux.top()) {
+			aux.pop();
 		}
-		s.erase(s.end() - 1);
-		s.erase(s.end() - 1);
-		min = s.back();
-	}
+		data.pop();
+ 	}
 
-	int top() {
-		if (s.empty()) {
-			return INT_MAX;
-		}
-		return *(s.end() - 2);
-	}
+ 	int top() {
+		return data.top();
+ 	}
 
-	int getMin() {
-		if (s.empty()) {
-			return INT_MAX;
-		}
-		return min;
-	}
-private:
-	int min;
-	vector<int> s;
-};
+ 	int getMin() {
+ 		return aux.top();
+ 	}
+ private:
+ 	stack<int> data;
+	stack<int> aux;
+ };
 
 /**
  * Your MinStack object will be instantiated and called as such:
