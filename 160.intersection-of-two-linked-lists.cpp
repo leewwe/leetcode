@@ -48,6 +48,7 @@ public:
         return NULL;
     }
 
+
 // 这个解法也是正确的
 /* Here's my solution which is like approach 3 but a little different. I store the size of ListA and
 ListB as len1 and len2. Then I reset the pointers to headA and headB and find the difference between
