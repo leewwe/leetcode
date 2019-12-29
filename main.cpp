@@ -172,6 +172,43 @@ void rotate_aux(vector<int>& subNums, int start, int end){
     }
 }
 
+
+
+#include <unordered_map>
+#include <algorithm>
+bool comp(const pair<int, int>& a, const pair<int, int>& b) {
+	if (a.second > b.second) {
+		return true;
+	}
+	else if (a.second == b.second) {
+		return a.first > b.first ? true : false;
+	}
+	else{
+		return false;
+	}
+}
+int rob(vector<int>& nums) {
+	vector<pair<int, int>> index_money;
+	for (int i = 0; i < nums.size(); ++i) {
+		index_money.push_back({ i, nums[i] });
+	}
+	std::sort(index_money.begin(), index_money.end(), comp);
+
+	int cnt = index_money[0].second;
+	int prev = index_money[0].first;
+	for (int i = 1; i < index_money.size(); ++i) {
+		if (abs(index_money[i].first - prev) == 1) {
+			continue;
+		}
+		else {
+			cnt += index_money[i].second;
+			prev = index_money[i].first;
+		}
+	}
+
+
+	return cnt;
+}
 int main(int argc, char** argv){
 
     // cout << "test" << endl;
@@ -205,9 +242,12 @@ int main(int argc, char** argv){
     // int res = maxProfit(stock);
     
     // vector<int> A{1,2,3,4,5,6};
-    vector<int> A{-1};
-    int k = 2;
-    rotate(A, k);
+    // vector<int> A{-1};
+    // int k = 2;
+    // rotate(A, k);
     
+    vector<int> nums{1,2,3,1};
+    rob(nums);
+
     return 0;
 }
