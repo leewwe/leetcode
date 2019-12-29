@@ -60,13 +60,36 @@ public:
     //     nums.insert(nums.begin(),pre.begin(), pre.end());
     //     nums.erase(nums.end() - k, nums.end());
     // }
-// 环状替换
+// *环状替换，空间复杂度O(1)(值使用了一个temp用于存储下一次要搬运的数据)，时间复杂度O(n)
+    // void rotate(vector<int>& nums, int k) {
+    //     k %= nums.size();
+    //     int cnt = 0; // 记录转移了多少个数字
+    //     for(int start = 0; cnt < nums.size(); ++start){
+    //         int curr = start;
+    //         int prev = nums[start];
+    //         do{
+    //             int next = (curr + k) % nums.size();
+    //             int temp = nums[next];
+    //             nums[next] = prev;
+    //             prev = temp;
+    //             curr = next;
+    //             ++cnt;
+    //         } while(curr != start);
+    //     }
+    // }
+// 使用反转，空间复杂度O(1)(没有使用额外的空间)，时间复杂度O(1)，这个是最容易想到的一种快速算法思路
     void rotate(vector<int>& nums, int k) {
-        // （因为如果 k 大于 n ，移动 k 次实际上相当于移动 k%n 次）
-        if (k > nums.size()) {
-            k %= nums.size();
+        k %= nums.size();
+        rotate_aux(nums, 0, nums.size() - 1);
+        rotate_aux(nums, 0, k - 1);
+        rotate_aux(nums, k, nums.size() - 1);
+    }
+    void rotate_aux(vector<int>& subNums, int start, int end){
+        while(start < end){
+            std::swap(subNums[start], subNums[end]);
+            ++start;
+            --end;
         }
-
     }
 };
 // @lc code=end

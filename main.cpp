@@ -157,7 +157,20 @@ int maxProfit(vector<int>& prices) {
     }
     return max;
 }
-
+void rotate_aux(vector<int>& subNums, int start, int end);
+void rotate(vector<int>& nums, int k) {
+    k = k % nums.size();
+    rotate_aux(nums, 0, nums.size() - 1);
+    rotate_aux(nums, 0, k - 1);
+    rotate_aux(nums, k, nums.size() - 1);
+}
+void rotate_aux(vector<int>& subNums, int start, int end){
+    while(start < end){
+        std::swap(subNums[start], subNums[end]);
+        ++start;
+        --end;
+    }
+}
 
 int main(int argc, char** argv){
 
@@ -186,9 +199,15 @@ int main(int argc, char** argv){
 
     // auto row = getRow(3);
 
-    vector<int> stock{7,1,5,3,6,4};
-    // vector<int> stock;
+    // vector<int> stock{7,1,5,3,6,4};
+    // // vector<int> stock;
+    // // int res = maxProfit(stock);
     // int res = maxProfit(stock);
-    int res = maxProfit(stock);
+    
+    // vector<int> A{1,2,3,4,5,6};
+    vector<int> A{-1};
+    int k = 2;
+    rotate(A, k);
+    
     return 0;
 }
