@@ -72,8 +72,42 @@
 // @lc code=start
 class Solution {
 public:
-    int myAtoi(string str) {
-        
+    int myAtoi(const string& str) {
+        if (str.size() == 0) {
+            return 0;
+        }
+
+        int start = 0;
+        //去除空白
+        while (str[start] == ' ') {
+            ++start;
+        }
+
+        // 排除错误的不是数字或者'+'和'-'，并提取符号
+        int isSign = 1; // 符号位
+        if (((str[start] > '9' || str[start] < '0')) && str[start] != '-' && str[start] != '+') {
+            return 0;
+        }
+        else if (str[start] == '-') {
+            isSign = -1;
+            ++start;
+        }
+        else if (str[start] == '+') {
+            ++start;
+        }
+        // 计算值，并且计算是否溢出
+        int ret = 0;
+        while (start < str.size() && (str[start] >= '0' && str[start] <= '9')) {
+            int num = (str[start] - '0') * isSign;
+            // 判断溢出
+            if (ret > INT_MAX / 10 || (ret == INT_MAX / 10 && num > 7)) return INT_MAX;
+            if (ret < INT_MIN / 10 || (ret == INT_MIN / 10 && num < -8)) return INT_MIN;
+            ret *= 10;
+            ret += num;
+            ++start;
+        }
+
+        return ret;
     }
 };
 // @lc code=end
